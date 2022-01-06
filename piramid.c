@@ -9,4 +9,5 @@ for(a; a != 0; a -= 1){
         }
     printf("\n");
     }
+return 0;
 }
