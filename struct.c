@@ -36,6 +36,5 @@ g.score_AVG = (float)(g.score_KOR+g.score_ENG+g.score_MATH+g.score_SCI)/4;
 printf("\nWelcome %s(%d)!\n", g.name, g.stu_id);
 printf("\n[%s's score list]\n\nKOR : %d\nENG : %d\nMATH : %d\nSCI : %d\naverage : %.2f\n", g.name, g.score_KOR, g.score_ENG, g.score_MATH, g.score_SCI, g.score_AVG);
 
-
 return 0;
 }
