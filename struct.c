@@ -15,23 +15,23 @@ int main()
 {
 struct grade g = {};
 
-printf("put your name : ");
+printf("Enter your name : ");
 scanf("%s", &g.name);
-printf("put your student id : ", g.name);
+printf("Enter your student id : ", g.name); //잘 몰라서 일단 6자리 생년월일로..
 scanf("%d", &g.stu_id);
-printf("put your KOR score : ", g.name, g.stu_id);
+printf("Enter your KOR score : ", g.name, g.stu_id);
 scanf("%d", &g.score_KOR);
-printf("put your ENG score : ");
+printf("Enter your ENG score : ");
 scanf("%d", &g.score_ENG);
-printf("put your MATH score : ");
+printf("Enter your MATH score : ");
 scanf("%d", &g.score_MATH);
-printf("put your SCI score : ");
+printf("Enter your SCI score : ");
 scanf("%d", &g.score_SCI);
 
 g.score_AVG = (float)(g.score_KOR+g.score_ENG+g.score_MATH+g.score_SCI)/4;
 
-printf("\nWelcome %s(%d)!\n", g.name, g.stu_id);
-printf("\n[%s's score list]\n\nKOR : %d\nENG : %d\nMATH : %d\nSCI : %d\naverage : %.2f\n", g.name, g.score_KOR, g.score_ENG, g.score_MATH, g.score_SCI, g.score_AVG);
+printf("\nWelcome %s(%06d)!\n", g.name, g.stu_id);
+printf("\n[%s's score list]\n\nKOR : %02d\nENG : %02d\nMATH : %02d\nSCI : %02d\naverage : %.2f\n", g.name, g.score_KOR, g.score_ENG, g.score_MATH, g.score_SCI, g.score_AVG);
 
 return 0;
 }
