@@ -4,28 +4,19 @@
 /** 마지막 길이 반환 함수 ***/
 int Endlen(int* arr)
 {
-int count = 0;
-for(int i = 0; i < 100; i++){
-    if(arr[i] != '\0'){
-        count += 1;
-        }
-    else if(arr[i] == '\0'){
-        break;
-        }
+int i = 0;
+while(arr[i] != '\0'){
+    i++;
     }
-return count;
+return i;
 }
 
 /**  데이터 출력 함수 ***/
 void Output(int* arr)
 {
-for(int i = 0; i < 100; i++){
+for(int i = 0; i <= Endlen(arr); i++){
     if(arr[i] != '\0'){
         printf("%d ", arr[i]);
-        }
-    else if(arr[i] == '\0'){
-        printf("\n");
-        break;
         }
     }
 }
@@ -33,35 +24,30 @@ for(int i = 0; i < 100; i++){
 /**  데이터 삽입 함수 ***/
 void Insert(int* arr, int data)
 {
-arr[Endlen(arr)] = data;
+if(Endlen(arr) < 99){
+    arr[Endlen(arr)] = data;
+    }
+else{
+    return -1;
+    }
 }
 
 /**  데이터 조회 함수 ***/
 int Search(int* arr, int target)
 {
-int count = 0;
-for(int i = 0; i < 100; i++){
-    if(arr[i] != target){
-        count += 1;
-        }
-    else if(arr[i] == target){
-        break;
+for(int i = 0; i <= Endlen(arr) ; i++){
+    if(arr[i] == target){
+        return i;
         }
     }
-return count;
 }
 
 /**  데이터 중복 조회 함수 ***/
 void DSearch(int* arr, int target)
 {
-int c = 0;
-for(int i = 0; i<100; i++){
-    if(arr[i] != target){
-        c += 1;
-        }
-    else if(arr[i] == target){
-        printf("%d 의 index : %d\n", target, c);
-        c += 1;
+for(int i = 0; i<=Endlen(arr); i++){
+    if(arr[i] == target){
+        printf("%d 의 index : %d\n", target, i);
         }
     }
 }
@@ -69,18 +55,11 @@ for(int i = 0; i<100; i++){
 /**  데이터 삭제 함수 ***/
 int Remove(int* arr, int target)
 {
-int i = 0;
-for(; i < 100; i++){
+for(int i = 0; i <= Endlen(arr); i++){
     if(arr[i] == target){
-        arr[i] = '\0';
-        break;
-        }
-    }
-for(; i < 100; i++){
-    arr[i] = arr[i+1];
-
-    if(arr[i] == '\0'){
-        break;
+        for(int j = i; j < Endlen(arr); j++){
+            arr[j] = arr[j+1];
+            }
         }
     }
 }
@@ -88,7 +67,7 @@ for(; i < 100; i++){
 /** 데이터 중복 삭제 함수 **/
 int DRemove(int* arr, int target)
 {
-for(int i = 0; i < 100; i++){
+for(int i = 0; i < Endlen(arr); i++){
     Remove(arr, target);
     }
 }
@@ -108,11 +87,12 @@ void main() {
 
     /*** 저장된 데이터  출력 ***/
     Output(Array);
+    printf("\n\n");
 
     /*** 저장된 데이터  조회 ***/
     printf("조회값 입력 : ");
     scanf("%d", &n1);
-    printf("입력한 데이터의 index : %d\n", Search(Array, n1));
+    printf("\n입력한 데이터의 index : %d\n", Search(Array, n1));
     
     /*** 중복 데이터  조회 ***/
     DSearch(Array, n1);
@@ -122,12 +102,15 @@ void main() {
     printf("삭제값 입력 : ");
     scanf("%d", &rm);
     Remove(Array, rm);
+    printf("\n");
     Output(Array);
     printf("\n");
 
     /*** 중복 데이터  삭제 ***/
-    printf("중복 데이터 삭제값 입력 : ");
+    printf("\n중복 데이터 삭제값 입력 : ");
     scanf("%d", &rm);
     DRemove(Array, rm);
+    printf("\n");
     Output(Array);
+    printf("\n");
 }
