@@ -97,6 +97,7 @@ listNode* searchNode(char* x) {
     return NULL;
 }
 
+// 노드 사이에 노드를 삽입하는 연산
 void insertMiddleNode(listNode* pre, char* x) {
 	listNode * node = (listNode *)malloc(sizeof(listNode));
 	if (node == NULL){
@@ -116,12 +117,7 @@ void insertMiddleNode(listNode* pre, char* x) {
 				cur->link = node;
 				break;
 			}
-			else if(cur->link == NULL){
-				printf("노드 사이가 아니거나 이전에 해당하는 노드가 없습니다.");
-			}
-			else{
-				cur = cur->link;
-			}
+			cur = cur->link;
 		}
     }
 }
@@ -129,7 +125,6 @@ void insertMiddleNode(listNode* pre, char* x) {
 // 리스트에서 노드 p를 삭제하는 연산
 void deleteNode(listNode* p) {
 	//1 삭제전 해당 데이터 존재유무 조회
-	
 	//2 삭제 위치가 처음인경우
 	//3 삭제 위치가 처음이아닌경우(마지막이거나 중간노드인경우)
 	//3-1 삭제 위치가 마지막인경우(삭제 이전노드의 link에 NULL 대입 후 삭제노드 free)
@@ -170,12 +165,21 @@ int main() {
 	else
 		printf("[%s]를 찾았습니다.\n", p->data);
 
+	printf("\n----------(3) 리스트에서 [일] 노드 탐색하기! ----------\n");
+	p = searchNode("일");
+	if (p == NULL)
+		printf("찾는 데이터가 없습니다.\n");
+	else
+		printf("[%s]를 찾았습니다.\n", p->data);
+
 	printf("\n----------(3) 리스트에서 [목] 노드 탐색하기! ----------\n");
 	p = searchNode("목");
 	if (p == NULL)
 		printf("찾는 데이터가 없습니다.\n");
 	else
 		printf("[%s]를 찾았습니다.\n", p->data);
+
+	
 
 	// ---------------------------------------------
 	// 데이터 삽입 (중간 노드)
@@ -187,22 +191,21 @@ int main() {
 	// ---------------------------------------------
 	// 데이터 삭제
 	// ---------------------------------------------
-	// printf("\n----------(6) 리스트에서 [일]노드 삭제하기!----------\n");
-	// p = searchNode("일");		// 삭제할 노드 위치 p를 찾음
-	// deleteNode(p);				// 포인터 p 노드 삭제
-	// printList();
+	printf("\n----------(6) 리스트에서 [일]노드 삭제하기!----------\n");
+	p = searchNode("일");		// 삭제할 노드 위치 p를 찾음
+	deleteNode(p);				// 포인터 p 노드 삭제
+	printList();
 
-	// printf("\n----------(7) 리스트에서 [월]노드 삭제하기!----------\n");
-	// p = searchNode("월");
-	// deleteNode(p);
-	// printList();
+	printf("\n----------(7) 리스트에서 [월]노드 삭제하기!----------\n");
+	p = searchNode("월");
+	deleteNode(p);
+	printList();
 
-	// printf("\n----------(8) 리스트에서 [목]노드 삭제하기!----------\n");
-	// p = searchNode("목");
-	// deleteNode(p);
-	// printList();
+	printf("\n----------(8) 리스트에서 [목]노드 삭제하기!----------\n");
+	p = searchNode("목");
+	deleteNode(p);
+	printList();
 	
-
 
 	freeLinkedList();               //리스트 메모리 해제
 	return 0;
