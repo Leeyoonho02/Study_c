@@ -63,22 +63,30 @@ void insertStudent(){
     else{
         Node* curr = L;
         Node* pre;
-        Node* next = curr->link;
-        while(curr != NULL){
-            if(strcmp(node->name, curr->name) == 1){
+        int n=1;
+        while(curr != NULL){ 
+            printf("%d", strcmp(node->name, curr->name));
+            if(strcmp(node->name, curr->name) > 0){
                 pre = curr;
                 curr = curr->link;
+                n++;
             }
-            else{
-                node->link = next;
-                curr->link = node;
-                break;
+            else if(strcmp(node->name, curr->name) <= 0){
+                if(n==1){
+                    node->link = curr;
+                    L = node;
+                    break;
+                }
+                else{
+                    node->link = curr;
+                    pre->link = node;
+                    break;
+                }
             }
-            // else if(strcmp(node->name, curr->name) == 0){
-            //     node->link = curr;
-            //     pre->link = node;
-            //     break;
-            // }
+        }
+        if(curr == NULL){
+            node->link = NULL;
+            pre->link = node;
         }
     }
     N++;
@@ -159,11 +167,9 @@ void deleteAllStudent(){
     }
     else{
         Node* curr = L;
-        Node* next = curr->link;
-        while(next != NULL){
+        while(curr != NULL){
             free(curr);
-            curr = next;
-            next = curr->link;
+            curr = curr->link;
         }
         L = NULL;
         N = 0;
@@ -176,7 +182,7 @@ void deleteAllStudent(){
 
 // 메뉴 선택 함수
 void menuSelect(){
-    system("clear");
+    //system("clear");
 
     int n;
     char a[20];
