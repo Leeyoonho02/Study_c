@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h> // 동적메모리관리에 필요함.
 #include <string.h> // 문자열 관련에 필요함.
@@ -5,87 +6,84 @@
 //==================================================================//
 
 // 리스트 노드 구조체 선언
-typedef struct studentNode{
-    char name[20];
+typedef struct studentNode {
+    char stud_name[10];
     int stud_id;
     float stud_score;
-    struct studentNode * link;
+    struct Node* link;
 }Node;
 
 // 전역변수들
-Node * L = NULL; // 헤더
-int N, i; // 노드 개수 카운트
+Node* L = NULL; // 헤더
+int N = 0, i = 0; // 노드 개수 카운트
 
 //==================================================================//
 
 // 학생 추가 함수
-void insertStudent(){
-    char a[20]; // 이름 입력 변수
-    int b; // 학번 입력 변수
-    float c; // 학점 입력 변수
-    
+void insertStudent() {
+    char name[10] = ""; // 이름 입력 변수
+    int id = 0; // 학번 입력 변수
+    float score = 0; // 학점 입력 변수
+
     printf("\n추가 대상 학생의 이름을 입력하세요 : ");
-    scanf("%s", a);
+    scanf("%s", name);
 
-    Return1 :
+Return1:
     printf("\n추가 대상 학생의 학번을 입력하세요 : ");
-    scanf("%d", &b);
+    scanf("%d", &id);
     Node* curr = L;
-        while(curr != NULL){
-            if(b == curr->stud_id){
-                printf("\n동일한 학번의 학생이 존재합니다.\n");
-                goto Return1;
-            }
-            else{
-                curr = curr->link;
-            }
+    while (curr != NULL) {
+        if (id == curr->stud_id) {
+            printf("\n동일한 학번의 학생이 존재합니다.\n");
+            goto Return1;
         }
+        else {
+            curr = curr->link;
+        }
+    }
 
-    Return2 :
+Return2:
     printf("\n추가 대상 학생의 학점을 입력하세요 : ");
-    scanf("%f", &c);
-    if(!(c>=0 && c<=4.5)){
+    scanf("%f", &score);
+    if (!(score >= 0 && score <= 4.5)) {
         printf("\n잘못된 범위입니다.\n");
         goto Return2;
     }
-    
+
     Node* node = (Node*)malloc(sizeof(Node));
-    if(node == NULL){
+    if (node == NULL) {
         exit(1);
     }
-    strcpy(node->name, a);
-    node->stud_id = b;
-    node->stud_score = c;
+    strcpy(node->stud_name, name);
+    node->stud_id = id;
+    node->stud_score = score;
+    node->link = NULL;
 
-    if(L == NULL){
+    if (L == NULL) {
         L = node;
     }
-    else{
+    else {
         Node* curr = L;
-        Node* pre;
-        int n=1;
-        while(curr != NULL){ 
-            printf("%d", strcmp(node->name, curr->name));
-            if(strcmp(node->name, curr->name) > 0){
+        Node* pre = NULL;
+        for (i = 0; i < N; i++) {
+            if (strcmp(node->stud_name, curr->stud_name) > 0) {
                 pre = curr;
                 curr = curr->link;
-                n++;
             }
-            else if(strcmp(node->name, curr->name) <= 0){
-                if(n==1){
+            else if (strcmp(node->stud_name, curr->stud_name) <= 0) {
+                if (i == 0) {
                     node->link = curr;
                     L = node;
                     break;
                 }
-                else{
+                else {
                     node->link = curr;
                     pre->link = node;
                     break;
                 }
             }
         }
-        if(curr == NULL){
-            node->link = NULL;
+        if (curr == NULL) {
             pre->link = node;
         }
     }
@@ -93,22 +91,22 @@ void insertStudent(){
 }
 
 // 학생 제거 함수
-void deleteStudent(char* a){    
+void deleteStudent(char* a) {
     Node* curr = L;
-    Node* pre;
-    for(i=1; i<=N; i++){
-        if(strcmp(curr->name, a)){
+    Node* pre = NULL;
+    for (i = 1; i <= N; i++) {
+        if (strcmp(curr->stud_name, a)) {
             pre = curr;
             curr = curr->link;
         }
-        else{
-            if(i == 1){
+        else {
+            if (i == 1) {
                 L = curr->link;
             }
-            else if(i == N){
+            else if (i == N) {
                 pre->link = NULL;
             }
-            else{
+            else {
                 pre->link = curr->link;
             }
             free(curr);
@@ -116,120 +114,102 @@ void deleteStudent(char* a){
             break;
         }
     }
-    if(curr == NULL){
+    if (curr == NULL) {
         printf("\n해당 학생이 없습니다.\n");
-        printf("\n계속하려면 아무 키나 입력하십시오...\n");
-        system("read");
     }
 }
 
 // 학생 조회 함수
-void searchStudent(char* a){  
-  
+void searchStudent(char* a) {
+
     Node* curr = L;
-    while(curr != NULL){
-        if(strcmp(curr->name, a)){
+    for (i = 0; i < N; i++) {
+        if (strcmp(curr->stud_name, a)) {
             curr = curr->link;
         }
-        else{
-            printf("\n[%s]\n학번 : %06d\n평균 학점 : %.1f\n", curr->name, curr->stud_id, curr->stud_score);
+        else {
+            printf("\n[%s]\n학번 : %06d\n평균 학점 : %.1f\n\n", curr->stud_name, curr->stud_id, curr->stud_score);
             break;
         }
     }
-    if(curr == NULL){
-        printf("\n해당 학생이 없습니다.\n");
-        
+    if (i == N) {
+        printf("\n해당 학생이 없습니다.\n\n");
     }
-    printf("\n계속하려면 아무 키나 입력하십시오...\n");
-    system("read");
 }
 
 // 리스트 전체 출력 함수
-void printAllStudent(){  
-    if(L == NULL){
-        printf("\n학생이 하나도 없습니다.\n");
+void printAllStudent() {
+    if (L == NULL) {
+        printf("\n학생이 하나도 없습니다.\n\n");
     }
-    else{
+    else {
         Node* curr = L;
-        while(curr != NULL){
-            printf("\n[%s]\n학번 : %06d\n평균 학점 : %.1f\n", curr->name, curr->stud_id, curr->stud_score);
+        for (i = 0; i < N; i++) {
+            printf("\n%p\n", curr);
+            printf("\n[%s]\n학번 : %06d\n평균 학점 : %.1f\n", curr->stud_name, curr->stud_id, curr->stud_score);
             curr = curr->link;
         }
     }
-    printf("\n계속하려면 아무 키나 입력하십시오...\n");
-    system("read");
 }
 
 // 리스트 초기화 함수
-void deleteAllStudent(){   
-   if(L == NULL){
+void deleteAllStudent() {
+    if (L == NULL) {
         printf("\n학생이 하나도 없습니다.\n");
     }
-    else{
+    else {
         Node* curr = L;
-        while(curr != NULL){
-            free(curr);
+        Node* pre = NULL;
+        for (i = 0; i < N; i++) {
+            pre = curr;
             curr = curr->link;
+            free(pre);
         }
         L = NULL;
         N = 0;
     }
-    printf("\n계속하려면 아무 키나 입력하십시오...\n");
-    system("read");
-}
-
-//==================================================================//
-
-// 메뉴 선택 함수
-void menuSelect(){
-    //system("clear");
-
-    int n;
-    char a[20];
-    printf("\n===============================================================\n[1] 학생 추가\n[2] 학생 제거\n[3] 학생 조회\n[4] 학생 리스트 전체 출력\n[5] 학생 리스트 초기화\n[6] 프로그램 종료\n===============================================================\n");
-    printf("\n원하는 항목의 번호를 입력하세요 : ");
-    scanf("%d", &n);
-
-    switch (n){
-        case 1 :
-            insertStudent();
-            menuSelect();
-            break;
-        case 2 :
-            printf("\n제거 대상 학생의 이름을 입력하세요 : ");
-            scanf("%s", a);
-            deleteStudent(a);
-            menuSelect();
-            break;
-        case 3 :
-            printf("\n조회 대상 학생의 이름을 입력하세요 : ");
-            scanf("%s", a);
-            searchStudent(a);
-            menuSelect();
-            break;
-        case 4 :
-            printAllStudent();
-            menuSelect();
-            break;
-        case 5 :
-            deleteAllStudent();
-            menuSelect();
-            break;
-        case 6 :
-            deleteAllStudent();
-            break;
-        default :
-            printf("\n잘못된 입력입니다.\n");
-            printf("\n계속하려면 아무 키나 입력하십시오...\n");
-            system("read");
-            menuSelect();
-            break ;
-    }
 }
 
 // 메인 함수
-void main(){   
-    printf("\n[학생 관리 프로그램]\n");
-    menuSelect();
-    printf("\n프로그램을 종료합니다.\n");
+void main() {
+
+    int n = 0;
+    char a[20] = { 0 };
+    printf("\n======================[학생 관리 프로그램]======================\n[1] 학생 추가\n[2] 학생 제거\n[3] 학생 조회\n[4] 학생 리스트 전체 출력\n[5] 학생 리스트 초기화\n[6] 프로그램 종료\n===============================================================\n");
+    printf("\n원하는 항목의 번호를 입력하세요 : ");
+    scanf("%d", &n);
+    switch (n) {
+    case 1:
+        insertStudent();
+        main();
+        break;
+    case 2:
+        printf("\n제거 대상 학생의 이름을 입력하세요 : ");
+        scanf("%s", a);
+        deleteStudent(a);
+        main();
+        break;
+    case 3:
+        printf("\n조회 대상 학생의 이름을 입력하세요 : ");
+        scanf("%s", a);
+        searchStudent(a);
+        main();
+        break;
+    case 4:
+        printAllStudent();
+        main();
+        break;
+    case 5:
+        deleteAllStudent();
+        main();
+        break;
+    case 6:
+        deleteAllStudent();
+        printf("\n프로그램을 종료합니다.\n");
+        break;
+    default:
+        printf("\n잘못된 입력입니다.\n");
+        main();
+        break;
+    }
 }
